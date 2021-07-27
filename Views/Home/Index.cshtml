@@ -1,0 +1,80 @@
+﻿@model InputMaskValidationErrorDemo.Models.DemoViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>InputMask Validation Error Demo</h1>
+    <p class="lead">Download InputMask from <a href="https://github.com/RobinHerbots/Inputmask">https://github.com/RobinHerbots/Inputmask</a> </p>
+</div>
+
+<div class="container pt-4 mt-4">
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="row mt-4">
+            <div class="col-md-3 text-right">
+                @Html.LabelFor(m => m.FromDate)
+            </div>
+            <div class="col-md-3">
+                @Html.EditorFor(m => m.FromDate)
+                <div>@Html.ValidationMessageFor(m => m.FromDate)</div>
+            </div>
+            <div class="col-md-3">
+                <span class="notes">(This field will have a validation error)</span>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-3 text-right" >
+                @Html.LabelFor(m => m.ToDate)
+            </div>
+            <div class="col-md-3">
+                @Html.EditorFor(m => m.ToDate)
+                <div>
+                    @Html.ValidationMessageFor(m => m.ToDate)
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span class="notes">(This field will NOT have a validation error)</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12 col-md-offset-3 mt-4 pt-4">
+                <input id="searchBtn" type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
+
+
+        }
+    </div>
+<br />
+
+<div class="card mt-4 bg-warning p-4" style="border:1px solid darkgray; font-weight:bolder">
+    <p>NOTE: The FROM date field has INPUTMASK applied with a placeholder. The TO field has just an HTML placeholder text.</p>
+    <p>
+        Submit the form without entering any data. The FROM field will be flagged with a validation error indicating that the input mask
+        "MM//DD/YYYY" is not a valid date.
+    </p>
+    <p>If you break in the debugger in the HTTP POST version of the Index method, you will see model state error as follows:</p>
+    <img src="~/Content/ModelState.JPG" />
+</div>
+
+
+@section Scripts {
+<script src="~/Scripts/inputmask/jquery.inputmask.min.js"></script>
+<script>
+    $(document).ready(function () {
+        debugger;
+        $("#searchBtn").focus();
+        $("#FromDate").inputmask({
+            "mask": "99/99/9999",
+            "placeholder": "MM/DD/YYYY",
+            "clearMaskOnLostFocus": false
+        });
+        $("#ToDate").prop("placeholder", "MM/DD/YYYY");
+
+    });
+</script>
+}
